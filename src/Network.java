@@ -1,25 +1,20 @@
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- *
- *  THIS NETWORK DOES NOT WORK YET
- *  IT WILL MAKE YOU VERY FRUSTRATED AND ANGRY AND I REALLY DONT KNOW WHY YET
- *
- */
-
 public class Network {
-    Functions f = new Functions();
-    Data d = new Data();
+    Functions f = new Functions(); // Activation Functions and Data Shuffle
+    Data d = new Data(); // Import Data
 
-    public double[][] data;
+    public double[][] data; // Dataset
 
-    public double learningRate = 0.2;
-    public double w1 = Math.random(), w2 = Math.random(), w3 = Math.random(), w4 = Math.random(), bias = Math.random();
+    public double learningRate = 0.2; // Rate network learns
+    public double w1 = Math.random(), w2 = Math.random(), w3 = Math.random(), w4 = Math.random(), bias = Math.random(); // Weights for each flower characteristic
 
 
     public void train() {
-        for(int i = 0; i < 50000; i++) {
-            int ri = (int) (Math.random() * data.length);
+        for(int i = 0; i < 50000; i++) { // Training Loop at 50k iterations
+            int ri = (int) (Math.random() * data.length);  // Get random index from data set
             double[] point = data[ri];
 
             // Weighted Average of Point's Features
@@ -28,9 +23,12 @@ public class Network {
             // Activation Function
             double prediction = f.sigmoid(z);
 
+            // Calculate Cost
             double target = point[4];
             double cost = f.square(prediction - target);
 
+            // Derive Activation Function
+                // Cost Minimization
             double dcost_pred = 2 * (prediction - target);
             double dpred_dz = f.sigmoid_derivative(z);
             double dz_dw1 = point[0];
@@ -62,14 +60,48 @@ public class Network {
         double z = sl * w1 + sw * w2 + pl * w3 + pw * w4 + bias;
         double prediction = Math.round(f.sigmoid(z) * 2) / 2.0;
         
-        if(prediction == 0) System.out.println("Iris Setosa");
-        else if(prediction == 0.5) System.out.println("Iris Versicolour");
-        else if(prediction == 1) System.out.println("Iris Virginica");
+        if (prediction == 0) System.out.println("Iris Setosa");
+        else if (prediction == 0.5) System.out.println("Iris Versicolour");
+        else if (prediction == 1) System.out.println("Iris Virginica");
     }
 
     public void load() throws Exception {
         data = d.loadFile("res\\Iris\\iris.data");
         data = f.shuffle(data);
+    }
+
+    public void writeFile(String data, String url) throws IOException {
+        File f = new File(url);
+        FileWriter fw;
+
+        if(f.createNewFile()) {
+            fw = new FileWriter(url);
+            fw.write(data);
+            fw.close();
+        } else {
+            fw = new FileWriter(url);
+            fw.write(data);
+            fw.close();
+        }
+    }
+
+    public void loadWeights(String url) throws Exception {
+        ArrayList<String[]> arr = new ArrayList<>(); // Store dataset
+
+        File file = new File(url);
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        // Split dataset information lines by "," using regex
+        String st;
+        while((st = br.readLine()) != null) {
+            arr.add(st.split("\\,"));
+        }
+
+        w1 = Double.valueOf(arr.get(0)[0]);
+        w2 = Double.valueOf(arr.get(0)[1]);
+        w3 = Double.valueOf(arr.get(0)[2]);
+        w4 = Double.valueOf(arr.get(0)[3]);
+        bias = Double.valueOf(arr.get(0)[4]);
     }
 
     public static void main(String[] args) throws Exception {
@@ -83,8 +115,24 @@ public class Network {
         System.out.print("\tPetal Length: "); double pl = s.nextDouble();
         System.out.print("\tPetal Width: "); double pw = s.nextDouble();
 
-        System.out.println("\nTraining...\n");
-        n.train();
+        System.out.print("\nTrain new weights? (y/n): "); char trainNew = s.next().charAt(0);
+
+        if(Character.toUpperCase(trainNew) == 'Y') {
+            System.out.println("\nTraining...\n");
+            n.train();
+
+            System.out.println("\nSaving weights and bias...\n");
+
+            String t = n.w1 + "," + n.w2 + "," + n.w3 + "," + n.w4 + "," + n.bias;
+
+            n.writeFile(t, "res/weights.txt");
+        } else if (Character.toUpperCase(trainNew) == 'N') {
+            System.out.println("Loading weights...");
+
+            n.loadWeights("res/weights.txt");
+
+            System.out.println("\nW1: " + n.w1 + ", W2: " + n.w2 + ", W3: " + n.w3 + ", W4: " + n.w4 + ", Bias: " + n.bias + "\n");
+        }
 
         n.calculate(sl, sw, pl, pw);
     }
