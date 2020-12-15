@@ -1,0 +1,1 @@
+g++ main.cpp functions/functions.cpp data/data.cpp training/train.cpp
