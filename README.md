@@ -1,4 +1,4 @@
-# Welcome to StackEdit!
+# Flower Network by Aru Gyani
 
 This is a feed-forward neural network designed to predict Iris flower classifications using the [UCI Machine Learning Database](https://archive.ics.uci.edu/ml/datasets/Iris) Iris data set.
 
