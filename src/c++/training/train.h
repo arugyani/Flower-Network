@@ -7,6 +7,8 @@
 #include <fstream>
 #include <math.h>
 #include <vector>
+#include <string>
+#include <sstream>
 #include <stdlib.h>
 
 using namespace std;

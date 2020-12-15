@@ -16,9 +16,9 @@ vector<vector<double>> trainingData = d.loadFile("./res/Iris/iris.data"); // Loa
 vector<double> weights;
 
 int main() {
-    //t.train_weights(10000, 0.05, trainingData, weights);
+    t.train_weights(10000, 0.05, trainingData, weights);
     //t.loadWeights(weights);
-    //t.calculate(6.9, 3.2, 5.8, 2, weights);
+    t.calculate(6.9, 3.2, 5.8, 2, weights);
 
     return 0;
 }

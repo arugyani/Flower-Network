@@ -61,23 +61,43 @@ void Train::saveWeights(vector<double> weights) {
     ofstream saveFile;
     saveFile.open("./res/weights.txt");
 
-    saveFile << weights.at(0) << " " << weights.at(1) << " " << weights.at(2) << " " << weights.at(3) << " " << weights.at(4);
+    saveFile << weights.at(0) << "," << weights.at(1) << "," << weights.at(2) << "," << weights.at(3) << "," << weights.at(4);
 }
 
 void Train::loadWeights(vector<double> &weights) {
     ifstream inputFile;
     
     inputFile.open("./res/weights.txt");
+    weights.clear();
 
     if (inputFile) {
+        string str;
         double w1, w2, w3, w4, bias;
 
-        inputFile >> w1 >> w2 >> w3 >> w4 >> bias;
+        if (!getline(inputFile, str)) {
+            cout << "Error opening file \"weights.txt\"" << endl;
+            exit(EXIT_FAILURE);
+        }
+
+        istringstream ss(str);
+        vector<string> record;
+
+         while (ss) {
+                string s;
+                if (!getline(ss, s, ',')) break;
+                record.push_back(s);
+        }
+
+        w1 = stod(record[0]);
+        w2 = stod(record[1]);
+        w3 = stod(record[2]);
+        w4 = stod(record[3]);
+        bias = stod(record[4]);
+
         weights.push_back(w1);
         weights.push_back(w2);
         weights.push_back(w3);
         weights.push_back(w4);
-        weights.push_back(bias);
 
         inputFile.close();
     } else {
