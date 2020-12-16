@@ -1,5 +1,6 @@
+package main.network;
+
 import java.io.*;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
 
 public class Data {

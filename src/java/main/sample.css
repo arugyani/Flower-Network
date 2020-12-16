@@ -1,0 +1,22 @@
+.root {
+    -fx-background-color: floralwhite;
+}
+
+#link {
+    -fx-underline: false;
+    -fx-background-color: floralwhite;
+}
+
+#link:hover {
+    -fx-underline: true;
+}
+
+#text {
+    -fx-background-color: -fx-text-box-border, floralwhite;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-radius: 0;
+}
+
+#text:focused {
+    -fx-background-color: -fx-focus-color, -fx-background;
+}

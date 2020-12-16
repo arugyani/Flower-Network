@@ -1,6 +1,5 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+package main.network;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
